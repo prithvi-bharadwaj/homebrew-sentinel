@@ -14,10 +14,10 @@ After the first release:
 
 ```sh
 brew tap prithvi-bharadwaj/sentinel
-brew install --cask sentinel
+brew install --cask prithvi-bharadwaj/sentinel/sentinel
 ```
 
-The cask lives in this repository under `Casks/sentinel.rb`.
+The cask lives in this repository under `Casks/sentinel.rb`. Use the fully qualified cask token because Homebrew's core cask tap already contains HashiCorp's `sentinel` cask.
 
 ## How It Works
 
