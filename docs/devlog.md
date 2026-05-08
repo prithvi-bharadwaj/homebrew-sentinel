@@ -33,3 +33,5 @@
 - Verified a local ad-hoc signed DMG build at `release/Sentinel-0.1.0.dmg`; latest SHA256 was `77f5d695725edc45b2edcd27c46455366579afa9407a0a980a027846bc320ea3`.
 - Installed SwiftLint locally, fixed the generated `.build` exclusion pattern, and verified `swiftlint` completes with 0 violations.
 - Filled the Homebrew cask owner as `prithvi-bharadwaj` based on the active GitHub CLI account.
+- Published `v0.1.0` to GitHub and verified `brew install --cask prithvi-bharadwaj/sentinel/sentinel` installs `/Applications/Sentinel.app`.
+- Gotcha: unqualified `brew install --cask sentinel` resolves to HashiCorp's existing Sentinel cask, so documentation uses the fully qualified tap token.
