@@ -1,0 +1,88 @@
+name: Sentinel
+
+options:
+  minimumXcodeGenVersion: 2.42.0
+  deploymentTarget:
+    macOS: "14.0"
+
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    from: 2.3.0
+  SentinelCore:
+    path: Packages/SentinelCore
+  SentinelInput:
+    path: Packages/SentinelInput
+  SentinelAuth:
+    path: Packages/SentinelAuth
+  SentinelPower:
+    path: Packages/SentinelPower
+  SentinelOverlay:
+    path: Packages/SentinelOverlay
+
+settings:
+  base:
+    SWIFT_VERSION: 5.9
+    MACOSX_DEPLOYMENT_TARGET: 14.0
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+
+targets:
+  Sentinel:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: App/Sentinel/Sources
+      - path: App/Sentinel/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.localhost.sentinel
+        PRODUCT_NAME: Sentinel
+        INFOPLIST_FILE: App/Sentinel/Resources/Info.plist
+        ENABLE_HARDENED_RUNTIME: YES
+    dependencies:
+      - package: KeyboardShortcuts
+      - package: SentinelCore
+      - package: SentinelInput
+      - package: SentinelAuth
+      - package: SentinelPower
+      - package: SentinelOverlay
+  SentinelUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: App/SentinelUITests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.localhost.sentinel.uitests
+        TEST_TARGET_NAME: Sentinel
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: Sentinel
+  SentinelTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: App/SentinelTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.localhost.sentinel.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Sentinel.app/Contents/MacOS/Sentinel"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+    dependencies:
+      - target: Sentinel
+
+schemes:
+  Sentinel:
+    build:
+      targets:
+        Sentinel: all
+        SentinelTests: [test]
+    test:
+      targets:
+        - SentinelTests
+      gatherCoverageData: true

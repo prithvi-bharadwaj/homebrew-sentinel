@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Test
+    runs-on: macos-14
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: brew install xcodegen swiftlint
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Run SwiftLint
+        run: swiftlint
+
+      - name: Test Swift packages
+        run: |
+          set -euo pipefail
+          for package in Packages/*; do
+            echo "Testing ${package}"
+            (cd "${package}" && swift test)
+          done
+
+      - name: Test app target
+        run: xcodebuild test -project Sentinel.xcodeproj -scheme Sentinel -destination 'platform=macOS' -quiet

@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build DMG and update cask
+    runs-on: macos-14
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install tools
+        run: brew install xcodegen create-dmg
+
+      - name: Build release DMG
+        run: ./Scripts/build-release.sh "${GITHUB_REF_NAME#v}"
+
+      - name: Compute SHA256
+        id: shasum
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          dmg="release/Sentinel-${version}.dmg"
+          echo "sha=$(shasum -a 256 "${dmg}" | awk '{print $1}')" >> "${GITHUB_OUTPUT}"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          gh release create "${GITHUB_REF_NAME}" \
+            "release/Sentinel-${version}.dmg" \
+            --title "Sentinel ${version}" \
+            --notes "Sentinel ${version}"
+
+      - name: Update Homebrew cask on main
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout main
+          ./Scripts/update-cask.sh "${version}" "${{ steps.shasum.outputs.sha }}" "${GITHUB_REPOSITORY_OWNER}"
+          git add Casks/sentinel.rb
+          git commit -m "chore(cask): update sentinel ${version}" || exit 0
+          git push origin HEAD:main

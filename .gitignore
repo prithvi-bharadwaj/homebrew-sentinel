@@ -1,0 +1,9 @@
+.DS_Store
+.build/
+DerivedData/
+Sentinel.xcodeproj/
+*.xcworkspace/
+*.xcuserstate
+*.xcuserdata/
+*.dmg
+release/
