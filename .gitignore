@@ -7,3 +7,5 @@ Sentinel.xcodeproj/
 *.xcuserdata/
 *.dmg
 release/
+.claude/
+skill-runs.jsonl
