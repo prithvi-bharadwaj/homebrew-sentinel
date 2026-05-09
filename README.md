@@ -2,15 +2,15 @@
 
 Sentinel is a free and open-source macOS menu-bar utility that locks the physical keyboard, mouse, and trackpad while leaving the screen on and apps running. Unlock uses Touch ID or the account password.
 
-> Screenshots and a demo GIF will be added before the first public release.
+## Screenshots
+
+Screenshots and a demo GIF placeholder live here until visual assets are captured from the signed app.
 
 ## Why This Exists
 
 Long-running AI agents, renders, ML training jobs, downloads, and remote sessions often need the Mac to stay awake with the monitor visible while you step away. Sentinel keeps the work visible and running while blocking local physical input until you authenticate again.
 
 ## Install
-
-After the first release:
 
 ```sh
 brew tap prithvi-bharadwaj/sentinel
