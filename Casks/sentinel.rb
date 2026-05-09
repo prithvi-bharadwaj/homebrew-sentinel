@@ -1,6 +1,6 @@
 cask "sentinel" do
   version "0.1.0"
-  sha256 "c2379c697c3373c86180788f33ff3b9dc8c8d71461c07163e2d706b2d761a3a6"
+  sha256 "9248a8bcc826f485409f3479f5a462636ec4e1618f51505a2964e34b536310b7"
 
   url "https://github.com/prithvi-bharadwaj/homebrew-sentinel/releases/download/v#{version}/Sentinel-#{version}.dmg"
   name "Sentinel"
