@@ -27,9 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             authenticator: BiometricAuthenticator(),
             powerManager: PowerAssertionManager(),
             stateDidChange: { [weak menuBarController] state in
-                Task { @MainActor in
-                    menuBarController?.update(state: state)
-                }
+                menuBarController?.update(state: state)
             }
         )
 

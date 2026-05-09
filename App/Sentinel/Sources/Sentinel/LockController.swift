@@ -13,7 +13,7 @@ actor LockController {
     private let inputBlocker: InputBlocker
     private let authenticator: BiometricAuthenticator
     private let powerManager: PowerAssertionManager
-    private let stateDidChange: @Sendable (LockState) -> Void
+    private let stateDidChange: @MainActor @Sendable (LockState) -> Void
     private let logger = Logger(subsystem: "org.localhost.sentinel", category: "lock")
 
     private var state: LockState = .unlocked
@@ -26,7 +26,7 @@ actor LockController {
         inputBlocker: InputBlocker,
         authenticator: BiometricAuthenticator,
         powerManager: PowerAssertionManager,
-        stateDidChange: @escaping @Sendable (LockState) -> Void
+        stateDidChange: @escaping @MainActor @Sendable (LockState) -> Void
     ) {
         self.settingsStore = settingsStore
         self.overlayManager = overlayManager
@@ -128,9 +128,7 @@ actor LockController {
     private func setState(_ nextState: LockState) async {
         state = nextState
         let callback = stateDidChange
-        await MainActor.run {
-            callback(nextState)
-        }
+        await callback(nextState)
     }
 
     private nonisolated func requestLock() {
