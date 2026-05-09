@@ -9,6 +9,7 @@ release_dir="${root}/release"
 cd "${root}"
 
 xcodegen generate
+bash Scripts/fix-xcodeproj-format.sh
 xcodebuild \
   -project Sentinel.xcodeproj \
   -scheme Sentinel \

@@ -9,26 +9,22 @@ public final class OverlayWindowManager {
     private var windows: [NSWindow] = []
     private var configuration: OverlayConfiguration?
     private var onUnlock: (() -> Void)?
-    private var screenObserver: NSObjectProtocol?
+    private let notificationCenter: NotificationCenter
     private let logger = Logger(subsystem: "org.localhost.sentinel", category: "overlay")
 
     /// Creates an overlay window manager.
     public init(notificationCenter: NotificationCenter = .default) {
-        screenObserver = notificationCenter.addObserver(
-            forName: NSApplication.didChangeScreenParametersNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            Task { @MainActor in
-                self?.rebuildIfNeeded()
-            }
-        }
+        self.notificationCenter = notificationCenter
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(screenParametersDidChange),
+            name: NSApplication.didChangeScreenParametersNotification,
+            object: nil
+        )
     }
 
     deinit {
-        if let screenObserver {
-            NotificationCenter.default.removeObserver(screenObserver)
-        }
+        notificationCenter.removeObserver(self)
     }
 
     /// Shows lock overlays on every current display.
@@ -53,6 +49,10 @@ public final class OverlayWindowManager {
             return
         }
         rebuildWindows()
+    }
+
+    @objc private func screenParametersDidChange(_ notification: Notification) {
+        rebuildIfNeeded()
     }
 
     private func rebuildWindows() {

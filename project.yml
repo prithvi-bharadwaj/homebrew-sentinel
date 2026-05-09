@@ -2,6 +2,7 @@ name: Sentinel
 
 options:
   minimumXcodeGenVersion: 2.42.0
+  xcodeVersion: "15.0"
   deploymentTarget:
     macOS: "14.0"
 
