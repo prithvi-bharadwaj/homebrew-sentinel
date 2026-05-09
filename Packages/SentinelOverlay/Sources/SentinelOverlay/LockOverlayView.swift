@@ -3,13 +3,11 @@ import SwiftUI
 /// SwiftUI content displayed by every lock overlay window.
 public struct LockOverlayView: View {
     private let configuration: OverlayConfiguration
-    private let onUnlock: () -> Void
     @State private var animateGradient = false
 
     /// Creates a lock overlay view.
-    public init(configuration: OverlayConfiguration, onUnlock: @escaping () -> Void) {
+    public init(configuration: OverlayConfiguration) {
         self.configuration = configuration
-        self.onUnlock = onUnlock
     }
 
     /// The overlay body.
@@ -46,16 +44,6 @@ public struct LockOverlayView: View {
                 Text("Place finger on Touch ID or press \(configuration.unlockChordDisplay)")
                     .font(.system(size: 17, weight: .medium))
                     .foregroundStyle(.white.opacity(0.82))
-
-                if configuration.showUnlockButton {
-                    Button("Unlock") {
-                        onUnlock()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .keyboardShortcut(.defaultAction)
-                    .accessibilityHint("Starts Touch ID or password authentication")
-                }
             }
             .multilineTextAlignment(.center)
             .padding(32)

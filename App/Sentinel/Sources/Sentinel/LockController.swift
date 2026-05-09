@@ -71,9 +71,7 @@ actor LockController {
             )
 
             await MainActor.run {
-                overlayManager.show(configuration: OverlayConfiguration(settings: settings)) { [weak self] in
-                    self?.requestAuthenticationUnlock()
-                }
+                overlayManager.show(configuration: OverlayConfiguration(settings: settings))
             }
 
             try await inputBlocker.start(unlockChord: settings.unlockChord) { [weak self] in

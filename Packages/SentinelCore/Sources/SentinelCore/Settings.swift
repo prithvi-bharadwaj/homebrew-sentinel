@@ -13,8 +13,6 @@ public struct Settings: Codable, Equatable, Sendable {
     public var preventSleepWithLidClosed: Bool
     /// Blur the visible screen content behind the lock overlay.
     public var blurScreenWhenLocked: Bool
-    /// Show an unlock button on the overlay.
-    public var showUnlockButtonOnOverlay: Bool
     /// Stored display form for the lock shortcut. KeyboardShortcuts owns the active global registration.
     public var lockShortcutDisplay: String
     /// Unlock chord recognized inside the event tap.
@@ -27,7 +25,6 @@ public struct Settings: Codable, Equatable, Sendable {
         preventSleepWhenLocked: true,
         preventSleepWithLidClosed: false,
         blurScreenWhenLocked: true,
-        showUnlockButtonOnOverlay: true,
         lockShortcutDisplay: "⌘⇧L",
         unlockChord: .default
     )
@@ -39,7 +36,6 @@ public struct Settings: Codable, Equatable, Sendable {
         preventSleepWhenLocked: Bool,
         preventSleepWithLidClosed: Bool,
         blurScreenWhenLocked: Bool,
-        showUnlockButtonOnOverlay: Bool,
         lockShortcutDisplay: String,
         unlockChord: UnlockChord
     ) {
@@ -48,7 +44,6 @@ public struct Settings: Codable, Equatable, Sendable {
         self.preventSleepWhenLocked = preventSleepWhenLocked
         self.preventSleepWithLidClosed = preventSleepWithLidClosed
         self.blurScreenWhenLocked = blurScreenWhenLocked
-        self.showUnlockButtonOnOverlay = showUnlockButtonOnOverlay
         self.lockShortcutDisplay = lockShortcutDisplay
         self.unlockChord = unlockChord
     }

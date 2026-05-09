@@ -8,7 +8,6 @@ import SwiftUI
 public final class OverlayWindowManager {
     private var windows: [NSWindow] = []
     private var configuration: OverlayConfiguration?
-    private var onUnlock: (() -> Void)?
     private let notificationCenter: NotificationCenter
     private let logger = Logger(subsystem: "org.localhost.sentinel", category: "overlay")
 
@@ -28,9 +27,8 @@ public final class OverlayWindowManager {
     }
 
     /// Shows lock overlays on every current display.
-    public func show(configuration: OverlayConfiguration, onUnlock: @escaping () -> Void) {
+    public func show(configuration: OverlayConfiguration) {
         self.configuration = configuration
-        self.onUnlock = onUnlock
         rebuildWindows()
     }
 
@@ -41,7 +39,6 @@ public final class OverlayWindowManager {
         }
         windows.removeAll()
         configuration = nil
-        onUnlock = nil
     }
 
     private func rebuildIfNeeded() {
@@ -61,7 +58,7 @@ public final class OverlayWindowManager {
         }
         windows.removeAll()
 
-        guard let configuration, let onUnlock else {
+        guard let configuration else {
             return
         }
 
@@ -79,7 +76,7 @@ public final class OverlayWindowManager {
             window.backgroundColor = .clear
             window.hasShadow = false
             window.contentView = NSHostingView(
-                rootView: LockOverlayView(configuration: configuration, onUnlock: onUnlock)
+                rootView: LockOverlayView(configuration: configuration)
             )
             window.orderFrontRegardless()
             windows.append(window)
