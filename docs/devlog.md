@@ -30,7 +30,7 @@
 - Added CI for Swift package tests, SwiftLint, XcodeGen project generation, and `xcodebuild test` on macOS 14.
 - Added a tag-based release workflow that builds, ad-hoc signs, packages a DMG, creates a GitHub Release, and updates the Homebrew cask.
 - Added release helper scripts and the initial `Casks/sentinel.rb` formula with `USER` placeholders pending the final GitHub owner.
-- Verified a local ad-hoc signed DMG build at `release/Sentinel-0.1.0.dmg`; latest SHA256 was `9248a8bcc826f485409f3479f5a462636ec4e1618f51505a2964e34b536310b7`.
+- Verified a local ad-hoc signed DMG build at `release/Sentinel-0.1.0.dmg`; latest SHA256 was `b49589d52c1705ce802e00250ce5c4bc6e92e0503ca677aee1401abe6f1d7e52`.
 - Installed SwiftLint locally, fixed the generated `.build` exclusion pattern, and verified `swiftlint` completes with 0 violations.
 - Filled the Homebrew cask owner as `prithvi-bharadwaj` based on the active GitHub CLI account.
 - Published `v0.1.0` to GitHub and verified `brew install --cask prithvi-bharadwaj/sentinel/sentinel` installs `/Applications/Sentinel.app`.

@@ -51,9 +51,7 @@ actor LockController {
         guard isTrusted else {
             await MainActor.run {
                 onboardingController.present { [weak self] in
-                    Task {
-                        await self?.lock()
-                    }
+                    self?.requestLock()
                 }
             }
             await setState(.unlocked)
@@ -74,16 +72,12 @@ actor LockController {
 
             await MainActor.run {
                 overlayManager.show(configuration: OverlayConfiguration(settings: settings)) { [weak self] in
-                    Task {
-                        await self?.authenticateAndUnlock()
-                    }
+                    self?.requestAuthenticationUnlock()
                 }
             }
 
             try await inputBlocker.start(unlockChord: settings.unlockChord) { [weak self] in
-                Task {
-                    await self?.authenticateAndUnlock()
-                }
+                self?.requestAuthenticationUnlock()
             }
 
             await setState(.locked)
@@ -136,6 +130,18 @@ actor LockController {
         let callback = stateDidChange
         await MainActor.run {
             callback(nextState)
+        }
+    }
+
+    private nonisolated func requestLock() {
+        Task {
+            await lock()
+        }
+    }
+
+    private nonisolated func requestAuthenticationUnlock() {
+        Task {
+            await authenticateAndUnlock()
         }
     }
 }
