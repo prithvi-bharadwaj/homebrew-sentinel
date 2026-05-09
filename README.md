@@ -27,9 +27,22 @@ Sentinel installs an active `CGEventTap` at the session level while locked. The 
 
 Sentinel requires Accessibility permission because macOS only allows trusted apps to install an event tap that can intercept input. Sentinel does not need Full Disk Access, Screen Recording, network access, or telemetry permission. Accessibility lets Sentinel observe and block local input events while locked; it does not grant access to your passwords or private files.
 
-## Security Model
+## Threat Model
 
-Sentinel has no network client, no telemetry, and no update pings. The app stores settings in `UserDefaults`, uses Apple's LocalAuthentication framework for unlock, and releases all event taps and power assertions on unlock or quit. It is open source so the behavior can be inspected directly.
+Sentinel is convenience tooling for blocking accidental local input while the screen stays on. It is not a security boundary. Treat it the way you would a "do not disturb" sign, not a deadbolt.
+
+What Sentinel does block: keyboard, mouse, scroll, and trackpad events delivered through the session-level `CGEventTap` while the lock is active. The unlock chord is consumed inside the tap so the chord characters do not leak to other apps after unlock.
+
+What Sentinel does **not** block, by design or by architectural limit:
+
+- A user with shell access on the same machine can `kill` the Sentinel process. The event tap is in-process and dies with it.
+- System-defined and hardware-level events outside `CGEventTap`'s reach: power button, lid close, `Ctrl-Cmd-Power` hard restart, media keys delivered as `NSSystemDefined`, Touch Bar system actions.
+- Other already-trusted Accessibility clients (UI scripting, automation tools) that drive the UI through the AX API instead of synthesized input events.
+- Remote sessions (SSH, Screen Sharing, MDM) — Sentinel does not interpose on those paths.
+
+For privacy, Sentinel has no network client, no telemetry, and no update pings. Settings are stored in `UserDefaults`. Unlock uses Apple's `LocalAuthentication` framework. Event taps and power assertions are released on graceful quit. The source is open so behavior can be inspected directly.
+
+If you need a real security lock against a present-and-motivated adversary, use macOS's built-in lock screen (`Ctrl-Cmd-Q`) instead.
 
 ## Build From Source
 
