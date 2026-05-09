@@ -135,7 +135,7 @@ actor LockController {
         }
     }
 
-    private nonisolated func requestAuthenticationUnlock() {
+    nonisolated func requestAuthenticationUnlock() {
         Task {
             await authenticateAndUnlock()
         }
