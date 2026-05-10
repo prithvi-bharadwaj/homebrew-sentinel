@@ -48,8 +48,10 @@ public final class OverlayWindowManager {
         rebuildWindows()
     }
 
-    @objc private func screenParametersDidChange(_ notification: Notification) {
-        rebuildIfNeeded()
+    @objc nonisolated private func screenParametersDidChange(_ notification: Notification) {
+        Task { @MainActor [weak self] in
+            self?.rebuildIfNeeded()
+        }
     }
 
     private func rebuildWindows() {
