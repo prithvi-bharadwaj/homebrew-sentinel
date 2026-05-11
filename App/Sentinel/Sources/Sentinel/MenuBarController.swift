@@ -111,7 +111,7 @@ final class MenuBarController: NSObject {
     @objc private func showAbout() {
         NSApp.orderFrontStandardAboutPanel(options: [
             .applicationName: "Sentinel",
-            .applicationVersion: "0.1.0",
+            .applicationVersion: "0.1.1",
             .credits: NSAttributedString(string: "Free and open-source input locking for macOS.")
         ])
         NSApp.activate(ignoringOtherApps: true)

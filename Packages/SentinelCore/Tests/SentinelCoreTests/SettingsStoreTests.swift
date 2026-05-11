@@ -10,7 +10,6 @@ final class SettingsStoreTests: XCTestCase {
         XCTAssertTrue(Settings.defaults.preventSleepWhenLocked)
         XCTAssertFalse(Settings.defaults.preventSleepWithLidClosed)
         XCTAssertTrue(Settings.defaults.blurScreenWhenLocked)
-        XCTAssertTrue(Settings.defaults.showUnlockButtonOnOverlay)
         XCTAssertEqual(Settings.defaults.unlockChord, .default)
     }
 

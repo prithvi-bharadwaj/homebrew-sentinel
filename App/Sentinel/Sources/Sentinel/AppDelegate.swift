@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private var lockController: LockController?
     private let overlayManager = OverlayWindowManager()
     private let onboardingController = AccessibilityOnboardingController()
+    private var currentLockState: LockState = .unlocked
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
@@ -26,7 +27,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             inputBlocker: InputBlocker(),
             authenticator: BiometricAuthenticator(),
             powerManager: PowerAssertionManager(),
-            stateDidChange: { [weak menuBarController] state in
+            stateDidChange: { [weak self, weak menuBarController] state in
+                self?.currentLockState = state
                 menuBarController?.update(state: state)
             }
         )
@@ -50,6 +52,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 self.openSettingsWindow()
             }
+        }
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        switch currentLockState {
+        case .unlocked, .failed:
+            return .terminateNow
+        case .locked, .locking, .unlocking:
+            lockController?.requestAuthenticationUnlock()
+            return .terminateCancel
         }
     }
 

@@ -62,7 +62,6 @@ struct SettingsRootView: View {
             Toggle("Prevent sleep when locked", isOn: binding(\.preventSleepWhenLocked))
             Toggle("Prevent sleep with lid closed", isOn: binding(\.preventSleepWithLidClosed))
             Toggle("Blur screen when locked", isOn: binding(\.blurScreenWhenLocked))
-            Toggle("Show unlock button on overlay", isOn: binding(\.showUnlockButtonOnOverlay))
         }
         .formStyle(.grouped)
     }
